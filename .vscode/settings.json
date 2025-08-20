@@ -3,6 +3,11 @@
 		"editor.defaultFormatter": "redhat.vscode-yaml",
 		"editor.formatOnSave": true
 	},
+	"[go]": {
+		"editor.defaultFormatter": "golang.go",
+		"editor.formatOnSave": true,
+		"editor.insertSpaces": false
+	},
 	"[json]": {
 		"editor.defaultFormatter": "biomejs.biome",
 		"editor.formatOnSave": true,
@@ -36,5 +41,29 @@
 		"source.organizeImports": "never",
 		"source.organizeImports.biome": "explicit",
 		"source.removeUnusedImports": "explicit"
+	},
+	"go.coverageDecorator": {
+		"coveredHighlightColor": "rgba(64, 128, 64, 0.5)",
+		"type": "highlight",
+		"uncoveredHighlightColor": "rgba(128, 64, 64, 0.5)"
+	},
+	"go.coverageOptions": "showUncoveredCodeOnly",
+	"go.coverOnTestPackage": true,
+	"go.delveConfig": {
+		"showGlobalVariables": true
+	},
+	"go.formatFlags": [],
+	"go.formatTool": "gofumpt",
+	"go.lintFlags": [],
+	"go.lintOnSave": "package",
+	"go.lintTool": "golangci-lint-v2",
+	"go.testFlags": [],
+	"go.testOnSave": false,
+	"go.useLanguageServer": true,
+	"gopls": {
+		"formatting.gofumpt": true,
+		"ui.diagnostic.shadow": true,
+		"ui.diagnostic.staticcheck": true,
+		"ui.diagnostic.unusedwrite": true
 	}
 }
