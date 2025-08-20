@@ -2,14 +2,14 @@
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"assist": {
 		"actions": {
+			"recommended": true,
 			"source": {
 				"organizeImports": "on",
 				"recommended": true,
 				"useSortedAttributes": "on",
 				"useSortedKeys": "on",
 				"useSortedProperties": "on"
-			},
-			"recommended": true
+			}
 		},
 		"enabled": true
 	},
@@ -38,21 +38,6 @@
 		"lineEnding": "lf",
 		"lineWidth": 120,
 		"useEditorconfig": false
-	},
-
-	"json": {
-		"assist": { "enabled": true },
-		"formatter": {
-			"bracketSpacing": true,
-			"enabled": true,
-			"expand": "auto",
-			"indentStyle": "tab",
-			"indentWidth": 4,
-			"lineWidth": 120,
-			"trailingCommas": "none"
-		},
-		"linter": { "enabled": true },
-		"parser": {}
 	},
 
 	"graphql": {
@@ -105,6 +90,21 @@
 		"linter": { "enabled": true }
 	},
 
+	"json": {
+		"assist": { "enabled": true },
+		"formatter": {
+			"bracketSpacing": true,
+			"enabled": true,
+			"expand": "auto",
+			"indentStyle": "tab",
+			"indentWidth": 4,
+			"lineWidth": 120,
+			"trailingCommas": "none"
+		},
+		"linter": { "enabled": true },
+		"parser": {}
+	},
+
 	"linter": {
 		"enabled": true,
 		"includes": [
@@ -152,12 +152,12 @@
 				"noUnsafeFinally": "error",
 				"noUnsafeOptionalChaining": "error",
 				"noUnusedLabels": "error",
+				"noUnusedPrivateClassMembers": "off",
 				"noUnusedVariables": "error",
 				"recommended": true,
 				"useIsNan": "error",
 				"useValidForDirection": "error",
 				"useValidTypeof": "error",
-				"noUnusedPrivateClassMembers": "off",
 				"useYield": "error"
 			},
 			"nursery": { "recommended": true },
