@@ -1,0 +1,67 @@
+# Binaries for programs and plugins
+bin/
+build/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Build output
+*.test
+*.out
+coverage.out
+
+# Go tooling
+# If you use the module cache outside the repo, these are safe to ignore locally
+$GOCACHE/
+pkg/
+Godeps/
+
+# Dependency directories
+# If you vendor dependencies, remove the `vendor/` line to keep it tracked
+vendor/
+
+# Temporary and test data
+testdata/
+*.prof
+
+# Runtime files
+*.pid
+*.seed
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*.local
+
+# Generated shell completions (optional)
+completion/
+
+# Editor directories and files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.iml
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+Thumbs.db
+
+# Temporary folders
+/tmp/
+
+# Ignore coverage and test binary outputs
+_coverprofile
+
+# Ignore binary produced by `go build` when placed in repo root
+# If your CLI binary is named `relay` or other, explicitly ignore it if desired
+relay
