@@ -1,0 +1,7 @@
+{
+	"devDependencies": {
+		"@biomejs/biome": "^2.2.0"
+	},
+	"name": "relay",
+	"type": "module"
+}

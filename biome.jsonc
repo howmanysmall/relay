@@ -1,0 +1,285 @@
+{
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on",
+				"recommended": true,
+				"useSortedAttributes": "on",
+				"useSortedKeys": "on",
+				"useSortedProperties": "on"
+			},
+			"recommended": true
+		},
+		"enabled": true
+	},
+
+	"formatter": {
+		"attributePosition": "auto",
+		"bracketSameLine": false,
+		"bracketSpacing": true,
+		"enabled": true,
+		"expand": "auto",
+		"formatWithErrors": true,
+		"includes": [
+			"**/*.json",
+			"**/*.jsonc",
+			"**/*.grit",
+			"!**/dist/**",
+			"!**/do-not-sync-ever/**",
+			"!**/garbage/**",
+			"!**/include/**",
+			"!**/node_modules/**",
+			"!bun/**",
+			"!.claude/**/*.json"
+		],
+		"indentStyle": "tab",
+		"indentWidth": 4,
+		"lineEnding": "lf",
+		"lineWidth": 120,
+		"useEditorconfig": false
+	},
+
+	"json": {
+		"assist": { "enabled": true },
+		"formatter": {
+			"bracketSpacing": true,
+			"enabled": true,
+			"expand": "auto",
+			"indentStyle": "tab",
+			"indentWidth": 4,
+			"lineWidth": 120,
+			"trailingCommas": "none"
+		},
+		"linter": { "enabled": true },
+		"parser": {}
+	},
+
+	"graphql": {
+		"assist": { "enabled": true },
+		"formatter": {
+			"bracketSpacing": true,
+			"enabled": true,
+			"indentStyle": "tab",
+			"indentWidth": 4,
+			"lineWidth": 120,
+			"quoteStyle": "double"
+		},
+		"linter": { "enabled": true }
+	},
+
+	"html": {
+		"formatter": {
+			"attributePosition": "auto",
+			"bracketSameLine": true,
+			"enabled": true,
+			"indentScriptAndStyle": true,
+			"indentStyle": "tab",
+			"indentWidth": 4,
+			"lineEnding": "lf",
+			"lineWidth": 120,
+			"selfCloseVoidElements": "always",
+			"whitespaceSensitivity": "strict"
+		}
+	},
+
+	"javascript": {
+		"formatter": {
+			"arrowParentheses": "always",
+			"attributePosition": "auto",
+			"bracketSameLine": false,
+			"bracketSpacing": true,
+			"enabled": true,
+			"expand": "auto",
+			"indentStyle": "tab",
+			"indentWidth": 4,
+			"jsxQuoteStyle": "double",
+			"lineEnding": "lf",
+			"lineWidth": 120,
+			"quoteProperties": "asNeeded",
+			"quoteStyle": "double",
+			"semicolons": "always",
+			"trailingCommas": "all"
+		},
+		"globals": ["Bun", "$range"],
+		"linter": { "enabled": true }
+	},
+
+	"linter": {
+		"enabled": true,
+		"includes": [
+			"!.claude/**/*.json",
+			"!**/.vscode/**",
+			"!**/*.code-workspace",
+			"!**/dist/**",
+			"!**/do-not-sync-ever/**",
+			"!**/garbage/**",
+			"!**/node_modules/**",
+			"!bun/**",
+			"src/**"
+		],
+		"rules": {
+			"a11y": { "recommended": true },
+			"complexity": {
+				"noAdjacentSpacesInRegex": "error",
+				"noBannedTypes": "error",
+				"noExtraBooleanCast": "error",
+				"noForEach": "error",
+				"noStaticOnlyClass": "error",
+				"noUselessCatch": "off",
+				"noUselessSwitchCase": "off",
+				"noUselessThisAlias": "error",
+				"noUselessTypeConstraint": "error",
+				"recommended": true,
+				"useArrowFunction": "off",
+				"useDateNow": "error",
+				"useFlatMap": "error"
+			},
+			"correctness": {
+				"noConstAssign": "error",
+				"noEmptyCharacterClassInRegex": "error",
+				"noEmptyPattern": "error",
+				"noGlobalObjectCalls": "error",
+				"noInvalidBuiltinInstantiation": "error",
+				"noInvalidConstructorSuper": "error",
+				"noPrecisionLoss": "error",
+				"noSelfAssign": "error",
+				"noSetterReturn": "error",
+				"noSwitchDeclarations": "error",
+				"noUndeclaredVariables": "off",
+				"noUnreachable": "error",
+				"noUnreachableSuper": "error",
+				"noUnsafeFinally": "error",
+				"noUnsafeOptionalChaining": "error",
+				"noUnusedLabels": "error",
+				"noUnusedVariables": "error",
+				"recommended": true,
+				"useIsNan": "error",
+				"useValidForDirection": "error",
+				"useValidTypeof": "error",
+				"noUnusedPrivateClassMembers": "off",
+				"useYield": "error"
+			},
+			"nursery": { "recommended": true },
+			"performance": {
+				"recommended": true,
+				"useTopLevelRegex": "error"
+			},
+			"security": { "recommended": true },
+			"style": {
+				"noEnum": "off",
+				"noInferrableTypes": "error",
+				"noNamespace": "off",
+				"noNegationElse": "off",
+				"noNonNullAssertion": "off",
+				"noParameterAssign": "off",
+				"noUnusedTemplateLiteral": "error",
+				"noUselessElse": "error",
+				"recommended": true,
+				"useArrayLiterals": "off",
+				"useAsConstAssertion": "error",
+				"useBlockStatements": "off",
+				"useConsistentMemberAccessibility": "off",
+				"useDefaultParameterLast": "error",
+				"useEnumInitializers": "error",
+				"useExplicitLengthCheck": "error",
+				"useFilenamingConvention": {
+					"level": "error",
+					"options": { "filenameCases": ["kebab-case"], "requireAscii": true }
+				},
+				"useForOf": "error",
+				"useNodejsImportProtocol": "error",
+				"useNumberNamespace": "error",
+				"useSelfClosingElements": "error",
+				"useSingleVarDeclarator": "error",
+				"useThrowNewError": "error"
+			},
+			"suspicious": {
+				"noAssignInExpressions": "error",
+				"noAsyncPromiseExecutor": "error",
+				"noCatchAssign": "error",
+				"noClassAssign": "error",
+				"noCompareNegZero": "error",
+				"noConstEnum": "off",
+				"noControlCharactersInRegex": "error",
+				"noDebugger": "error",
+				"noDuplicateCase": "error",
+				"noDuplicateClassMembers": "error",
+				"noDuplicateObjectKeys": "error",
+				"noDuplicateParameters": "error",
+				"noEmptyBlockStatements": "off",
+				"noExplicitAny": "error",
+				"noExtraNonNullAssertion": "error",
+				"noFallthroughSwitchClause": "error",
+				"noFunctionAssign": "error",
+				"noGlobalAssign": "error",
+				"noImportAssign": "error",
+				"noMisleadingCharacterClass": "error",
+				"noMisleadingInstantiator": "error",
+				"noPrototypeBuiltins": "error",
+				"noRedeclare": "error",
+				"noShadowRestrictedNames": "off",
+				"noSparseArray": "error",
+				"noThenProperty": "error",
+				"noUnsafeDeclarationMerging": "error",
+				"noUnsafeNegation": "error",
+				"noWith": "error",
+				"recommended": true,
+				"useErrorMessage": "error",
+				"useGetterReturn": "error",
+				"useIsArray": "error",
+				"useNumberToFixedDigitsArgument": "error"
+			}
+		}
+	},
+
+	"overrides": [
+		{
+			"includes": [
+				".vscode/**",
+				".vscode/*.code-snippets",
+				"**/*.code-workspace",
+				"tsconfig.json",
+				"*.code-snippets"
+			],
+			"json": {
+				"formatter": {
+					"enabled": true,
+					"indentStyle": "tab",
+					"indentWidth": 4,
+					"lineWidth": 120,
+					"trailingCommas": "all"
+				},
+				"linter": { "enabled": true },
+				"parser": {
+					"allowComments": true,
+					"allowTrailingCommas": true
+				}
+			}
+		},
+		{
+			"includes": ["**/.vscode/settings.json", "**/.vscode/tasks.json"],
+			"json": {
+				"formatter": {
+					"enabled": true,
+					"indentStyle": "tab",
+					"indentWidth": 4,
+					"lineWidth": 120,
+					"trailingCommas": "none"
+				},
+				"linter": { "enabled": true },
+				"parser": {
+					"allowComments": false,
+					"allowTrailingCommas": false
+				}
+			}
+		}
+	],
+
+	"vcs": {
+		"clientKind": "git",
+		"defaultBranch": "main",
+		"enabled": true,
+		"useIgnoreFile": true
+	}
+}
