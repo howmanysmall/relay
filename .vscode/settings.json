@@ -4,6 +4,7 @@
 		"editor.formatOnSave": true
 	},
 	"[go]": {
+		"editor.codeActionsOnSave": {},
 		"editor.defaultFormatter": "golang.go",
 		"editor.formatOnSave": true,
 		"editor.insertSpaces": false
@@ -42,6 +43,7 @@
 		"source.organizeImports.biome": "explicit",
 		"source.removeUnusedImports": "explicit"
 	},
+	"go.buildFlags": ["-race"],
 	"go.coverageDecorator": {
 		"coveredHighlightColor": "rgba(64, 128, 64, 0.5)",
 		"type": "highlight",
@@ -52,18 +54,43 @@
 	"go.delveConfig": {
 		"showGlobalVariables": true
 	},
-	"go.formatFlags": [],
-	"go.formatTool": "gofumpt",
 	"go.lintFlags": [],
 	"go.lintOnSave": "package",
 	"go.lintTool": "golangci-lint-v2",
-	"go.testFlags": [],
+	"go.testFlags": ["-race", "-count=1"],
 	"go.testOnSave": false,
+	"go.toolsEnvVars": {
+		"PATH": "${env:PATH}:${env:HOME}/go/bin"
+	},
 	"go.useLanguageServer": true,
+	"go.vetFlags": ["-all"],
 	"gopls": {
 		"formatting.gofumpt": true,
+		"hints": {
+			"assignVariableTypes": true,
+			"compositeLiteralFields": true,
+			"compositeLiteralTypes": true,
+			"constantValues": true,
+			"parameterNames": true,
+			"rangeVariableTypes": true
+		},
+		"ui.codelenses": {
+			"generate": true,
+			"regenerate_cgo": true,
+			"test": true,
+			"tidy": true,
+			"upgrade_dependency": true,
+			"vendor": true
+		},
+		"ui.completion.usePlaceholders": true,
+		"ui.diagnostic.analyses": {
+			"shadow": true,
+			"unusedparams": true,
+			"unusedwrite": true
+		},
 		"ui.diagnostic.shadow": true,
 		"ui.diagnostic.staticcheck": true,
-		"ui.diagnostic.unusedwrite": true
+		"ui.diagnostic.unusedwrite": true,
+		"ui.semanticTokens": true
 	}
 }
