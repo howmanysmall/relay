@@ -1,0 +1,57 @@
+# relay.toml - Example TOML configuration
+version = "1.0"
+
+[default]
+bufferSize = "auto"
+destination = "./dest"
+mode = "mirror"
+source = "./source"
+watch = true
+workers = 0
+
+[default.filters]
+exclude = [".git", "node_modules", "*.tmp", "*.swp"]
+ignoreHidden = false
+include = ["**/*"]
+respectGitignore = true
+smart = true
+
+[default.conflict]
+backup = true
+backupDir = ".relay-backups"
+interactive = false
+strategy = "newest"
+
+[default.retry]
+backoff = "exponential"
+initialDelay = "100ms"
+maxAttempts = 3
+maxDelay = "10s"
+multiplier = 2.0
+
+[default.performance]
+checksumAlgo = "blake3"
+enableCaching = true
+ioConcurrency = 0
+useZeroCopy = true
+
+[[profiles]]
+destination = "./dev-mirror"
+extends = "default"
+name = "development"
+source = "./src"
+
+[profiles.filters]
+exclude = [".git", "node_modules", "target", "build"]
+smart = true
+
+[[profiles]]
+extends = "default"
+mode = "sync"
+name = "production"
+watch = false
+workers = 16
+
+[profiles.conflict]
+backup = true
+strategy = "interactive"

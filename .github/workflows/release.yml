@@ -1,0 +1,195 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - goos: linux
+            goarch: amd64
+            suffix: ''
+          - goos: linux
+            goarch: arm64
+            suffix: ''
+          - goos: darwin
+            goarch: amd64
+            suffix: ''
+          - goos: darwin
+            goarch: arm64
+            suffix: ''
+          - goos: windows
+            goarch: amd64
+            suffix: '.exe'
+          - goos: windows
+            goarch: arm64
+            suffix: '.exe'
+          - goos: freebsd
+            goarch: amd64
+            suffix: ''
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.25.0'
+        cache: true
+
+    - name: Get version from tag
+      id: version
+      run: |
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        else
+          VERSION=dev-$(git rev-parse --short HEAD)
+        fi
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Building version: $VERSION"
+
+    - name: Build binary
+      env:
+        GOOS: ${{ matrix.goos }}
+        GOARCH: ${{ matrix.goarch }}
+        CGO_ENABLED: 0
+      run: |
+        BINARY_NAME="relay-${{ steps.version.outputs.version }}-${{ matrix.goos }}-${{ matrix.goarch }}${{ matrix.suffix }}"
+        echo "Building $BINARY_NAME"
+        
+        # Set build flags
+        BUILD_FLAGS="-ldflags=-s -w -X main.version=${{ steps.version.outputs.version }} -X main.buildTime=$(date -u +%Y-%m-%dT%H:%M:%SZ) -X main.commit=$(git rev-parse HEAD)"
+        
+        go build $BUILD_FLAGS -o "$BINARY_NAME" ./src/cmd/relay
+        
+        # Create checksum
+        if command -v sha256sum >/dev/null; then
+          sha256sum "$BINARY_NAME" > "$BINARY_NAME.sha256"
+        else
+          shasum -a 256 "$BINARY_NAME" > "$BINARY_NAME.sha256"
+        fi
+        
+        echo "binary_name=$BINARY_NAME" >> $GITHUB_OUTPUT
+      id: build
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: relay-${{ matrix.goos }}-${{ matrix.goarch }}
+        path: |
+          relay-*
+          *.sha256
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.25.0'
+        cache: true
+
+    - name: Run tests
+      run: |
+        go test -v -race -coverprofile=coverage.out ./src/...
+
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.out
+        flags: unittests
+        name: codecov-umbrella
+
+  lint:
+    name: Lint Code
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.25.0'
+        cache: true
+
+    - name: golangci-lint
+      uses: golangci/golangci-lint-action@v3
+      with:
+        version: latest
+        working-directory: .
+        args: --config .golangci.json ./src/...
+
+  release:
+    name: Create Release
+    needs: [build, test, lint]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+
+    - name: Generate changelog
+      id: changelog
+      run: |
+        # Simple changelog generation from recent commits
+        CHANGELOG=$(git log --pretty=format:"- %s" $(git describe --tags --abbrev=0 HEAD^)..HEAD 2>/dev/null || git log --pretty=format:"- %s" --max-count=10)
+        echo "CHANGELOG<<EOF" >> $GITHUB_OUTPUT
+        echo "$CHANGELOG" >> $GITHUB_OUTPUT
+        echo "EOF" >> $GITHUB_OUTPUT
+
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: Release ${{ github.ref_name }}
+        body: |
+          ## What's Changed
+          
+          ${{ steps.changelog.outputs.CHANGELOG }}
+          
+          ## Installation
+          
+          ### Linux/macOS
+          ```bash
+          # Download and install (replace with your platform)
+          curl -L -o relay https://github.com/${{ github.repository }}/releases/download/${{ github.ref_name }}/relay-${{ github.ref_name }}-linux-amd64
+          chmod +x relay
+          sudo mv relay /usr/local/bin/
+          ```
+          
+          ### Windows
+          Download the appropriate `.exe` file for your architecture and add it to your PATH.
+          
+          ### Verify installation
+          ```bash
+          relay --version
+          ```
+          
+          ## Checksums
+          
+          All binaries include SHA256 checksums for verification.
+        files: |
+          relay-*/relay-*
+          relay-*/*.sha256
+        draft: false
+        prerelease: false
+        token: ${{ secrets.GITHUB_TOKEN }}

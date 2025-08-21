@@ -1,0 +1,96 @@
+// relay.jsonc - Example configuration with comments
+{
+	"$schema": "../schema/relay-config.json",
+
+	// Default profile configuration
+	"default": {
+		"bufferSize": "auto", // auto | "1MB" | "10MB" etc.
+
+		// Conflict resolution settings
+		"conflict": {
+			"backup": true,
+			"backupDir": ".relay-backups",
+			"interactive": false,
+			"strategy": "newest" // newest | source | destination | interactive | smart | skip
+		},
+		"destination": "./dest",
+
+		// File filtering rules
+		"filters": {
+			"exclude": [".git", "node_modules", "*.tmp", "*.swp", ".DS_Store"],
+			"ignoreHidden": false,
+			"include": ["**/*"],
+			"maxFileSize": "1GB",
+			"minFileSize": "1B",
+			"respectGitignore": true,
+			"smart": true // Auto-exclude common patterns
+		},
+		"mode": "mirror", // mirror | sync | watch
+
+		// Performance optimizations
+		"performance": {
+			"checksumAlgo": "blake3", // blake3 | sha256 | md5
+			"enableCaching": true, // Cache file metadata and hashes
+			"ioConcurrency": 0, // 0 = auto-detect
+			"networkTimeout": "30s",
+			"useZeroCopy": true // Use sendfile/copyfile when available
+		},
+
+		// Retry configuration
+		"retry": {
+			"backoff": "exponential", // exponential | linear | fixed
+			"initialDelay": "100ms",
+			"maxAttempts": 3,
+			"maxDelay": "10s",
+			"multiplier": 2.0
+		},
+		"source": "./source",
+		"watch": true,
+		"workers": 0 // 0 = auto-detect (CPU cores * 2)
+	},
+
+	// Additional profiles
+	"profiles": {
+		"backup": {
+			"conflict": {
+				"backup": false,
+				"strategy": "source"
+			},
+			"extends": "default",
+			"filters": {
+				"exclude": [".git", "*.tmp", "*.cache", "node_modules"],
+				"smart": true
+			},
+			"mode": "mirror",
+			"watch": false
+		},
+		"development": {
+			"destination": "./dev-mirror",
+			"extends": "default",
+			"filters": {
+				"exclude": [".git", "node_modules", "target", "build", "dist", "*.log"],
+				"smart": true
+			},
+			"source": "./src",
+			"watch": true
+		},
+
+		"production": {
+			"conflict": {
+				"backup": true,
+				"strategy": "interactive"
+			},
+			"extends": "default",
+			"mode": "sync",
+			"performance": {
+				"checksumAlgo": "blake3",
+				"enableCaching": true,
+				"ioConcurrency": 32,
+				"useZeroCopy": true
+			},
+			"watch": false,
+			"workers": 16
+		}
+	},
+	"version": "1.0"
+}

@@ -1,0 +1,28 @@
+{
+	"default": {
+		"bufferSize": "auto",
+		"conflict": {
+			"backup": true,
+			"strategy": "newest"
+		},
+		"destination": "./dest",
+		"filters": {
+			"exclude": [".git", "node_modules", "*.tmp"],
+			"include": ["**/*"],
+			"respectGitignore": true,
+			"smart": true
+		},
+		"mode": "mirror",
+		"retry": {
+			"backoff": "exponential",
+			"initialDelay": "100ms",
+			"maxAttempts": 3,
+			"maxDelay": "10s",
+			"multiplier": 2.0
+		},
+		"source": "./source",
+		"watch": true,
+		"workers": 0
+	},
+	"version": "1.0"
+}

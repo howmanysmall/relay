@@ -15,7 +15,7 @@ coverage.out
 # Go tooling
 # If you use the module cache outside the repo, these are safe to ignore locally
 $GOCACHE/
-pkg/
+/pkg/
 Godeps/
 
 # Dependency directories
@@ -63,6 +63,7 @@ _coverprofile
 
 # Ignore binary produced by `go build` when placed in repo root
 # If your CLI binary is named `relay` or other, explicitly ignore it if desired
-relay
+/relay/
+/dist/
 
 node_modules

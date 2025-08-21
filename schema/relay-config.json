@@ -1,0 +1,219 @@
+{
+	"$id": "https://relay.dev/schema/config.json",
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"anyOf": [
+		{
+			"required": ["default"]
+		},
+		{
+			"required": ["profiles"]
+		}
+	],
+	"definitions": {
+		"ConflictConfig": {
+			"properties": {
+				"backup": {
+					"default": false,
+					"description": "Create backups before overwriting",
+					"type": "boolean"
+				},
+				"backupDir": {
+					"default": ".relay-backups",
+					"description": "Directory for backup files",
+					"type": "string"
+				},
+				"interactive": {
+					"default": false,
+					"description": "Enable interactive prompts",
+					"type": "boolean"
+				},
+				"strategy": {
+					"default": "newest",
+					"description": "Conflict resolution strategy",
+					"enum": ["newest", "source", "destination", "interactive", "smart", "skip"],
+					"type": "string"
+				}
+			},
+			"type": "object"
+		},
+		"FilterRules": {
+			"properties": {
+				"exclude": {
+					"description": "Exclude patterns (glob)",
+					"items": { "type": "string" },
+					"type": "array"
+				},
+				"ignoreHidden": {
+					"default": false,
+					"description": "Ignore hidden files and directories",
+					"type": "boolean"
+				},
+				"include": {
+					"description": "Include patterns (glob)",
+					"items": { "type": "string" },
+					"type": "array"
+				},
+				"maxFileSize": {
+					"description": "Maximum file size to sync",
+					"type": "string"
+				},
+				"minFileSize": {
+					"description": "Minimum file size to sync",
+					"type": "string"
+				},
+				"respectGitignore": {
+					"default": true,
+					"description": "Respect .gitignore files",
+					"type": "boolean"
+				},
+				"smart": {
+					"default": true,
+					"description": "Automatically exclude common patterns",
+					"type": "boolean"
+				}
+			},
+			"type": "object"
+		},
+		"PerformanceConfig": {
+			"properties": {
+				"checksumAlgo": {
+					"default": "blake3",
+					"description": "Checksum algorithm",
+					"enum": ["blake3", "sha256", "md5"],
+					"type": "string"
+				},
+				"enableCaching": {
+					"default": true,
+					"description": "Enable metadata and hash caching",
+					"type": "boolean"
+				},
+				"ioConcurrency": {
+					"default": 0,
+					"description": "I/O concurrency level (0 = auto)",
+					"minimum": 0,
+					"type": "integer"
+				},
+				"networkTimeout": {
+					"default": "30s",
+					"description": "Network operation timeout",
+					"type": "string"
+				},
+				"useZeroCopy": {
+					"default": true,
+					"description": "Use zero-copy operations when available",
+					"type": "boolean"
+				}
+			},
+			"type": "object"
+		},
+		"Profile": {
+			"properties": {
+				"bufferSize": {
+					"default": "auto",
+					"description": "Buffer size for operations",
+					"type": "string"
+				},
+				"conflict": {
+					"$ref": "#/definitions/ConflictConfig"
+				},
+				"destination": {
+					"description": "Destination directory path",
+					"type": "string"
+				},
+				"extends": {
+					"description": "Profile to extend from",
+					"type": "string"
+				},
+				"filters": {
+					"$ref": "#/definitions/FilterRules"
+				},
+				"mode": {
+					"default": "mirror",
+					"description": "Synchronization mode",
+					"enum": ["mirror", "sync", "watch"],
+					"type": "string"
+				},
+				"performance": {
+					"$ref": "#/definitions/PerformanceConfig"
+				},
+				"retry": {
+					"$ref": "#/definitions/RetryConfig"
+				},
+				"source": {
+					"description": "Source directory path",
+					"type": "string"
+				},
+				"watch": {
+					"default": false,
+					"description": "Enable real-time watching",
+					"type": "boolean"
+				},
+				"workers": {
+					"default": 0,
+					"description": "Number of worker goroutines (0 = auto)",
+					"minimum": 0,
+					"type": "integer"
+				}
+			},
+			"type": "object"
+		},
+		"RetryConfig": {
+			"properties": {
+				"backoff": {
+					"default": "exponential",
+					"description": "Backoff strategy",
+					"enum": ["exponential", "linear", "fixed"],
+					"type": "string"
+				},
+				"initialDelay": {
+					"default": "100ms",
+					"description": "Initial delay between retries",
+					"type": "string"
+				},
+				"maxAttempts": {
+					"default": 3,
+					"description": "Maximum retry attempts",
+					"minimum": 1,
+					"type": "integer"
+				},
+				"maxDelay": {
+					"default": "10s",
+					"description": "Maximum delay between retries",
+					"type": "string"
+				},
+				"multiplier": {
+					"default": 2.0,
+					"description": "Backoff multiplier",
+					"minimum": 1,
+					"type": "number"
+				}
+			},
+			"type": "object"
+		}
+	},
+	"description": "Configuration schema for Relay file mirroring tool",
+	"properties": {
+		"$schema": {
+			"description": "JSON Schema reference",
+			"type": "string"
+		},
+		"default": {
+			"$ref": "#/definitions/Profile",
+			"description": "Default profile configuration"
+		},
+		"profiles": {
+			"additionalProperties": {
+				"$ref": "#/definitions/Profile"
+			},
+			"description": "Named profile configurations",
+			"type": "object"
+		},
+		"version": {
+			"default": "1.0",
+			"description": "Configuration version",
+			"type": "string"
+		}
+	},
+	"title": "Relay Configuration",
+	"type": "object"
+}
