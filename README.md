@@ -1,10 +1,12 @@
 # Relay
 
-High-performance file mirroring and synchronization tool built for speed, usability, and reliability.
+High-performance file mirroring and synchronization tool built for speed,
+usability, and reliability.
 
 ## Features
 
-- **Blazing Fast**: Optimized for maximum performance with zero-copy operations and parallel processing
+- **Blazing Fast**: Optimized for maximum performance with zero-copy operations
+and parallel processing
 - **One-Way Mirroring**: Efficiently mirror files from source to destination
 - **Two-Way Sync**: Intelligent bidirectional synchronization with conflict resolution
 - **Real-Time Watching**: Monitor directories for changes and sync automatically
@@ -82,6 +84,7 @@ relay watch --dashboard
 One-way file mirroring from source to destination.
 
 **Examples:**
+
 ```bash
 # Basic mirror
 relay mirror ./source ./backup
@@ -110,6 +113,7 @@ relay mirror ./src ./dst --include "*.go" --exclude "*.tmp"
 Two-way synchronization between directories.
 
 **Examples:**
+
 ```bash
 # Basic two-way sync
 relay sync ./local ./remote
@@ -132,6 +136,7 @@ relay sync ./docs ./backup --backup
 Watch directories for changes and sync in real-time.
 
 **Examples:**
+
 ```bash
 # Use default configuration (relay.jsonc)
 relay watch
@@ -154,6 +159,7 @@ relay watch --dry-run
 Validate configuration files.
 
 **Examples:**
+
 ```bash
 # Validate default config
 relay validate
@@ -188,16 +194,16 @@ Create a `relay.jsonc` file:
 
 ```jsonc
 {
-  "default": {
-    "source": "./source",
-    "destination": "./destination",
-    "mode": "mirror",
-    "watch": false,
-    "filters": {
-      "exclude": [".git", "node_modules", "*.tmp"],
-      "smart": true
-    }
-  }
+	"default": {
+		"source": "./source",
+		"destination": "./destination",
+		"mode": "mirror",
+		"watch": false,
+		"filters": {
+			"exclude": [".git", "node_modules", "*.tmp"],
+			"smart": true
+		}
+	}
 }
 ```
 
@@ -205,41 +211,42 @@ Create a `relay.jsonc` file:
 
 ```jsonc
 {
-  "default": {
-    "source": "./src",
-    "destination": "./backup",
-    "mode": "mirror",
-    "workers": 8,
-    "bufferSize": "10MB",
-    
-    "filters": {
-      "include": ["**/*"],
-      "exclude": [".git", "node_modules", "target", "*.log"],
-      "respectGitignore": true,
-      "smart": true,
-      "maxFileSize": "1GB"
-    },
-    
-    "performance": {
-      "checksumAlgo": "blake3",
-      "enableCaching": true,
-      "useZeroCopy": true,
-      "ioConcurrency": 16
-    },
-    
-    "conflict": {
-      "strategy": "newest",
-      "backup": true,
-      "backupDir": ".relay-backups"
-    },
-    
-    "retry": {
-      "maxAttempts": 3,
-      "initialDelay": "100ms",
-      "backoff": "exponential"
-    }
-  }
+	"default": {
+		"bufferSize": "10MB",
+		"conflict": {
+			"backup": true,
+			"backupDir": ".relay-backups",
+			"strategy": "newest"
+		},
+
+		"destination": "./backup",
+		"filters": {
+			"exclude": [".git", "node_modules", "target", "*.log"],
+			"include": ["**/*"],
+			"maxFileSize": "1GB",
+			"respectGitignore": true,
+			"smart": true
+		},
+
+		"mode": "mirror",
+		"performance": {
+			"checksumAlgo": "blake3",
+			"enableCaching": true,
+			"ioConcurrency": 16,
+			"useZeroCopy": true
+		},
+
+		"retry": {
+			"backoff": "exponential",
+			"initialDelay": "100ms",
+			"maxAttempts": 3
+		},
+
+		"source": "./src",
+		"workers": 8
+	}
 }
+
 ```
 
 ### Multiple Profiles
@@ -250,24 +257,25 @@ relay mirror ./src ./dst --profile production
 
 # Configuration with multiple profiles
 {
-  "profiles": {
-    "development": {
-      "extends": "default",
-      "watch": true,
-      "filters": {
-        "exclude": [".git", "node_modules", "target"]
-      }
-    },
-    "production": {
-      "extends": "default",
-      "workers": 16,
-      "performance": {
-        "useZeroCopy": true,
-        "ioConcurrency": 32
-      }
-    }
-  }
+	"profiles": {
+		"development": {
+			"extends": "default",
+			"filters": {
+				"exclude": [".git", "node_modules", "target"]
+			},
+			"watch": true
+		},
+		"production": {
+			"extends": "default",
+			"performance": {
+				"ioConcurrency": 32,
+				"useZeroCopy": true
+			},
+			"workers": 16
+		}
+	}
 }
+
 ```
 
 ## Common Use Cases
@@ -440,8 +448,28 @@ go fmt ./...
 
 ## License
 
-[Add your license information here]
+MIT License
+
+Copyright (c) 2025 howmanysmall
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ## Contributing
 
-[Add contributing guidelines here]
+Just follow the contribution guide. 😃
